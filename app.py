@@ -1,12 +1,13 @@
 """ Main app module. """
 from flask import Flask, jsonify
-from flask_restful import Api
-from flask_sslify import SSLify
 from flask_cors import CORS
+from flask_restplus import Api
+from flask_sslify import SSLify
 
-from api.models import db
 from api.endpoints.activities import ActivitiesAPI
 from api.endpoints.users import UserAPI
+from api.models import db
+
 try:
     from .config import configuration
 except ImportError:
@@ -17,7 +18,8 @@ def create_app(environment="Development"):
     """Factory Method that creates an instance of the app with the given config.
 
     Args:
-        enviroment (str): Specify the configuration to initilize app with.
+        environment (str): Specify the configuration to initilize app with.
+
     Returns:
         app (Flask): it returns an instance of Flask.
     """
@@ -25,14 +27,20 @@ def create_app(environment="Development"):
     app.config.from_object(configuration[environment])
     db.init_app(app)
 
+    api = Api(
+        app=app,
+        default='Api',
+        default_label="Available Endpoints",
+        title='🗣️ Open-Platform Api 😱',
+        version='1.0',
+        description="""Open-Platform Api Endpoint Documentation 📚""")
+
     # to redirect all incoming production requests to https
     if environment.lower() == "production":
         sslify = SSLify(app, subdomains=True, permanent=True)
 
     # enable cross origin resource sharing
     CORS(app)
-
-    api = Api(app)
 
     # activities endpoints
     api.add_resource(
@@ -42,9 +50,13 @@ def create_app(environment="Development"):
 
     # user endpoints
     api.add_resource(
-        UserAPI, '/api/v1/user/profile', '/api/v1/user/profile',
+        UserAPI, '/api/v1/user/profile', '/api/v1/user/profile/',
         endpoint='user_info'
     )
+
+    # all urls/routes should be configured/added here
+    from api.points_endpoint import PointResource
+    api.add_resource(PointResource, '/api/v1/points/', '/api/v1/points')
 
     # handle default 404 exceptions with a custom response
     @app.errorhandler(404)

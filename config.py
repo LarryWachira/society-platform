@@ -1,4 +1,5 @@
 """Conatain App configurations."""
+
 import os
 
 from dotenv import load_dotenv
@@ -36,8 +37,8 @@ class Testing(Config):
     DEBUG = True
     TESTING = True
     SQLALCHEMY_TRACK_MODIFICATIONS = True
-    SQLALCHEMY_DATABASE_URI = "sqlite:///" + Config.BASE_DIR \
-                              + "/tests/test_db.sqlite"
+    SQLALCHEMY_DATABASE_URI = os.environ.get('TEST_DATABASE') or \
+        "sqlite:///" + Config.BASE_DIR + "/tests/test_db.sqlite"
 
 
 class Staging(Development):
