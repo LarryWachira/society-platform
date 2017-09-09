@@ -141,7 +141,7 @@ a.account-action:hover{
     line-height: 1.4em;
 }
 
-main#content{
+#main-content{
     padding: 40px 0;
 }
 
@@ -163,4 +163,8 @@ main#content{
 
 #tab-navigation .tab.active{
     border-color: pink;
+}
+
+#recent-activity{
+    margin-top: 35px;
 }

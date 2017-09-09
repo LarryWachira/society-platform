@@ -80,9 +80,55 @@ body{
 
 #lightbox-header .title{
     font-size: 18px;
-    /* font-weight: 700; */
 }
 
 #lightbox-body{
     margin-top: 18px;
+}
+
+.row{
+    position: relative;
+}
+
+#recent-activity{
+
+}
+
+#featured-members{
+    /* width: 340px; */
+}
+
+#menu-icon{
+    position: fixed;
+    top:0;
+    left: 0;
+    padding: 8px;
+    z-index: 250;
+}
+
+#menu-icon svg{
+    width: 48px;
+    height: 48px;
+}
+
+#content{
+    display: flex;
+}
+
+#app-content{
+    flex: 1;
+}
+
+#sidebar{
+    height: 100vh;
+    width: 280px;
+    background: #3F51B5;
+    color: white;
+    padding-top: 60px;
+    transition: all 200ms ease-in-out;
+}
+
+.sidebar-collapsed #sidebar{
+    flex: 0;
+    width: 0;
 }
