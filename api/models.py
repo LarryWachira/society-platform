@@ -8,11 +8,21 @@ db = SQLAlchemy()
 
 
 def generate_uuid():
-    return uuid.uuid4()
+    return str(uuid.uuid1())
+
+
+# many to many relationship between users and activities
+user_activity = db.Table('user_activity',
+                         db.Column('user_uuid', db.String,
+                                   db.ForeignKey('users.uuid'), nullable=False
+                                   ),
+                         db.Column('activity_uuid', db.String,
+                                   db.ForeignKey('activities.uuid'),
+                                   nullable=False))
 
 
 class Base(db.Model):
-    """Base model, contain utility methids and properties."""
+    """Base model, contain utility methods and properties."""
 
     __abstract__ = True
     uuid = db.Column(db.String, primary_key=True, default=generate_uuid)
@@ -68,12 +78,14 @@ class User(Base):
     """Models Users."""
 
     __tablename__ = 'users'
-    user_id = db.Column(db.String)
+    uuid = db.Column(db.String, primary_key=True)
     email = db.Column(db.String)
-    role = db.Column(db.String)
+    role = db.Column(db.String, default="member")
     country = db.Column(db.String)
     society_id = db.Column(db.String, db.ForeignKey('societies.uuid'))
     points = db.relationship('Point', backref='user', lazy='dynamic')
+    activities = db.relationship('Activity', secondary='user_activity',
+                                 lazy='dynamic', backref='users')
 
 
 class Society(Base):
@@ -95,12 +107,15 @@ class Activity(Base):
     points = db.relationship('Point', backref='activity', lazy='dynamic')
 
 
-class Point(Base):
+class Point(db.Model):
     """To contain points fields."""
 
     __tablename__ = 'points'
+    uuid = db.Column(db.String, primary_key=True, default=generate_uuid)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
     value = db.Column(db.Integer, nullable=False)
-    approve_date = db.Column(db.DateTime)
+    approved_at = db.Column(db.DateTime)
+    approver_id = db.Column(db.String)
     user_id = db.Column(db.String, db.ForeignKey('users.uuid'))
     society_id = db.Column(db.String, db.ForeignKey('societies.uuid'))
     activity_id = db.Column(db.String, db.ForeignKey('activities.uuid'))
