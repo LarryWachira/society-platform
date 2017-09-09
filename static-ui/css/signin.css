@@ -1,0 +1,43 @@
+body{
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    font-family: 'Open Sans', sans-serif;
+    color: #555
+}
+
+.container{
+    width: 500px;
+}
+
+#logo{
+    width: 250px;
+    margin: 120px auto 35px;
+}
+
+#logo img{
+    display: block;
+    width: 100%;
+}
+
+#app-details{
+    margin: 50px auto 60px;
+    text-align: center;
+}
+
+#app-details .title{
+    text-align: center;
+    font-weight: normal;
+}
+
+#app-details .description{
+    margin: 10px auto 0;
+    width: 70%;
+    font-size: 14px;
+}
+
+#signin-button > div{
+    display: block;
+    margin: auto;
+}

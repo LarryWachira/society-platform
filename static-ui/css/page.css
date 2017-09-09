@@ -1,0 +1,166 @@
+#app-header{
+    position: relative;
+    height: 480px;
+    background: #000;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-image: url(../images/tobias-keller-104263.jpg);
+    color: white;
+}
+
+#app-header:after{
+    content: '';
+    display: block;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: linear-gradient(to bottom, rgba(0, 0, 0, .6) 10%,rgba(0, 0, 0, .9) 100% );
+}
+
+#app-header .container{
+    box-sizing: border-box;
+    position: relative;
+    z-index: 5;
+    padding: 20px 0;
+    height: 100%;
+}
+
+#logo{
+    display: block;
+    width: 45px;
+    height: 45px;
+}
+
+#logo img{
+    display: block;
+    width: 100%;
+}
+
+#account-tools{
+    position: absolute;
+    top: 20px;
+    right: 0;
+}
+
+#account-icon{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: white;
+    cursor: pointer;
+}
+
+#account-actions{
+    position: absolute;
+    right: 0;
+    margin-top: 6px;
+    background: white;
+    color: #eee;
+}
+
+a.account-action{
+    display: block;
+    padding: 20px;
+    color: #555;
+    text-decoration: none;
+}
+
+a.account-action:hover{
+    background: #ddd;
+}
+
+#bottom-left{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    margin-bottom: 65px;
+}
+
+#badge-wrapper{
+    width: 150px;
+    height: 150px;
+    background: white;
+    border-radius: 50%;
+    border: 5px solid white;
+}
+
+#bottom-right{
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    margin-bottom: 65px;
+}
+
+#points-indicator{
+    margin-bottom: 100px;
+    text-align: right;
+}
+
+#points-indicator .number{
+    display: block;
+    font-size: 60px;
+    margin-bottom: 8px;
+}
+
+#points-indicator .label{
+    display: block;
+    margin-top: 15px;
+}
+
+#edit-button{
+    padding: 12px;
+    width: 120px;
+    background: white;
+    font-size: 13px;
+    border: 0;
+    cursor: pointer;
+    outline: none;
+    border-radius: 3px;
+}
+
+#edit-button:hover{
+    background: #ddd;
+}
+
+#society-info{
+    margin-left: 70px;
+}
+
+#society-name{
+    display: block;
+    font-size: 40px;
+}
+
+#society-statement{
+    display: block;
+    font-size: 15px;
+    max-width: 300px;
+    line-height: 1.4em;
+}
+
+main#content{
+    padding: 40px 0;
+}
+
+#tab-navigation{
+
+}
+
+#tab-navigation .tab{
+    display: inline-block;
+    color: #555;
+    text-decoration: none;
+    padding: 8px 12px;
+    border-bottom: 1px solid transparent;
+}
+
+#tab-navigation .tab:hover{
+    background: #eee;
+}
+
+#tab-navigation .tab.active{
+    border-color: pink;
+}
