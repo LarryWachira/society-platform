@@ -1,5 +1,4 @@
-from .models import User, Society, Activity, Point
-
+from .models import Activity, Point, Society, User
 
 # activities
 interview = Activity(name="Bootcamp Interviews",
