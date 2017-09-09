@@ -59,8 +59,8 @@ class Base(db.Model):
             A dict object
         """
         dictionary_mapping = {
-            artibute.name: getattr(self, artibute.name)
-            for artibute in self.__table__.columns}
+            attribute.name: getattr(self, attribute.name)
+            for attribute in self.__table__.columns}
         return dictionary_mapping
 
 
@@ -68,6 +68,7 @@ class User(Base):
     """Models Users."""
 
     __tablename__ = 'users'
+    user_id = db.Column(db.String)
     email = db.Column(db.String)
     role = db.Column(db.String)
     country = db.Column(db.String)
