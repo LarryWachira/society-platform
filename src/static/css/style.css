@@ -132,3 +132,10 @@ body{
     flex: 0;
     width: 0;
 }
+
+.st0{
+    fill: #fff;
+    stroke:#fff; 
+    stroke-width:6;
+    stroke-miterlimit:10
+}
