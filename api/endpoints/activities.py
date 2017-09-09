@@ -1,8 +1,8 @@
 from flask import jsonify
-from flask_restful import Resource
+from flask_restplus import Resource
 
-from ..models import Activity
 from ..auth import token_required
+from ..models import Activity
 
 
 class ActivitiesAPI(Resource):
@@ -17,7 +17,7 @@ class ActivitiesAPI(Resource):
             activity = _activity.serialize()
             activity_points = _activity.points
             activity['totalPointsLogged'] = sum([point.value for point in
-                                                   activity_points])
+                                                 activity_points])
             activities_list.append(activity)
 
         return jsonify(dict(data=activities_list))
