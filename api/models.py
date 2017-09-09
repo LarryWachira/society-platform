@@ -8,11 +8,11 @@ db = SQLAlchemy()
 
 
 def generate_uuid():
-    return uuid.uuid4()
+    return uuid.uuid1()
 
 
 class Base(db.Model):
-    """Base model, contain utility methids and properties."""
+    """Base model, contain utility methods and properties."""
 
     __abstract__ = True
     uuid = db.Column(db.String, primary_key=True, default=generate_uuid)
@@ -68,7 +68,7 @@ class User(Base):
     """Models Users."""
 
     __tablename__ = 'users'
-    user_id = db.Column(db.String)
+    uuid = db.Column(db.String, primary_key=True)
     email = db.Column(db.String)
     role = db.Column(db.String)
     country = db.Column(db.String)
