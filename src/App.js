@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import SocietyInfo from './components/SocietyInfo';
 import Score from './components/Score';
+import ActivityForm from './components/forms/ActivityForm';
 import './static/css/page.css';
 import logoWhite from './static/images/andela-logo-white.png';
 
@@ -15,16 +16,46 @@ class App extends Component {
         this.toggleLogout = this.toggleLogout.bind(this);
         this.resetUI = this.resetUI.bind(this);
         this.toggleSidebar = this.toggleSidebar.bind(this);
+        this.onActivityChange = this.onActivityChange.bind(this);
+        this.closeLightbox = this.closeLightbox.bind(this);
+        this.addActivity = this.addActivity.bind(this);
+        this.showActivityForm = this.showActivityForm.bind(this);
     }
 
     componentWillMount(){
-        this.state = this.getInitialState();
+        this.state = this.getDefaultState();
     }
 
-    getInitialState(){
+    getDefaultState(){
         return {
-            iconClicked: false
+            iconClicked: false,
+            showSidebar: false,
+            showActivityForm: false,
+            newActivity: {
+                name: '',
+                comment: '',
+                quantity: 1,
+                isWorking: false
+            }
         };
+    }
+
+    closeLightbox(){
+        this.setState(prevState => {
+            return {
+                showActivityForm: false
+            }
+        });
+    }
+
+    addActivity(event){
+        const formData = {
+            name: this.state.newActivity.name,
+            quantity: this.state.newActivity.quantity,
+            comment: this.state.newActivity.comment
+        }
+
+        console.log(formData)
     }
 
     toggleLogout(event){
@@ -47,20 +78,20 @@ class App extends Component {
         })
     }
 
-    renderInLightbox(component = null){
+    renderInLightbox(title, component = null){
         if (!component){
             return <div />
         }
         return (
             <div id="lightbox">
-                <a href="" id="lightbox-close">
+                <a id="lightbox-close" onClick={this.closeLightbox}>
                     <svg xmlns="http://www.w3.org/2000/svg" version="1.1" id="Layer_1" x="0px" y="0px" width="512px" height="512px" viewBox="0 0 512 512">
                         <polygon className="st0" points="340.2,160 255.8,244.3 171.8,160.4 160,172.2 244,256 160,339.9 171.8,351.6 255.8,267.8 340.2,352   352,340.3 267.6,256 352,171.8 "/>
                     </svg>
                 </a>
                 <div id="lightbox-content">
                     <div id="lightbox-header">
-                        <span className="title">Edit your page</span>
+                        <span className="title">{title}</span>
                     </div>
                     <div id="lightbox-body">
                         {component}
@@ -78,6 +109,12 @@ class App extends Component {
         return "";
     }
 
+    showActivityForm(){
+        const {state} = this;
+        state.showActivityForm = true;
+        this.setState(state);
+    }
+
     toggleSidebar(event){
         event.preventDefault();
         event.stopPropagation();
@@ -87,6 +124,28 @@ class App extends Component {
                 showSidebar: !prevState.showSidebar
             }
         });
+    }
+
+    onActivityChange(event){
+        let {state} = this;
+
+        state.newActivity[event.target.name] = event.target.value;
+        this.setState(state);
+    }
+
+    renderActivityForm(){
+        if (!this.state.showActivityForm){
+            return <span />;
+        }
+        
+        return this.renderInLightbox("Log an activity", 
+            <ActivityForm name={this.state.newActivity.name}
+                comment={this.state.newActivity.description}
+                quantity={this.state.newActivity.quantity}
+                onChange={this.onActivityChange}
+                close={this.closeLightbox}
+                addActivity={this.addActivity}
+                isWorking={this.state.newActivity.isWorking} />);
     }
 
     render() {
@@ -120,7 +179,8 @@ class App extends Component {
                                         statement="We are invicticus"
                                         badge="http://via.placeholder.com/150x150" />
                         
-                                    <Score score="3,382" />
+                                    <Score score="3,382"
+                                        showForm={this.showActivityForm} />
                                 </div>
                             </div>
                         
@@ -132,8 +192,8 @@ class App extends Component {
                                         <a href="" className="tab">About</a>
                                     </div>
                                     <div className="row">
-                                        <div className="left">dd</div>
-                                        <div className="right">hdh</div>
+                                        <div className="left"></div>
+                                        <div className="right"></div>
                                         <div className="clearfix"></div>
                                     </div>
                                 </div>
@@ -142,7 +202,7 @@ class App extends Component {
                     
                 </div>
                 
-                {this.renderInLightbox()}
+                {this.renderActivityForm()}
             </div>
     );
   }

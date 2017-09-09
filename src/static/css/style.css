@@ -53,7 +53,7 @@ body{
     background: white;
     border-radius: 3px;
     z-index: 2;
-    width: 650px;
+    width: 570px;
     margin-left: auto;
     margin-right: auto;
     padding: 20px;
@@ -138,4 +138,29 @@ body{
     stroke:#fff; 
     stroke-width:6;
     stroke-miterlimit:10
+}
+
+button#cancel, button#submit{
+    padding: 6px 0;
+    border-radius: 5px;
+    border: 1px solid #eee;
+    font: inherit;
+    width: 90px;
+    background: white;
+    cursor: pointer;
+    outline: none;
+}
+
+button#submit:hover{
+    opacity: .7;
+}
+
+button#cancel:hover{
+    background: #efefef;
+}
+
+button#submit{
+    margin-left: 12px;
+    background: #059c80;
+    color: white;
 }

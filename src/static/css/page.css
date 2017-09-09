@@ -129,10 +129,12 @@ a.account-action:hover{
     cursor: pointer;
     outline: none;
     border-radius: 3px;
+    color: white;
+    background: #307927;
 }
 
 #edit-button:hover{
-    background: #ddd;
+    background: #38902e;
 }
 
 #society-info{
@@ -177,4 +179,50 @@ a.account-action:hover{
 
 #recent-activity{
     margin-top: 35px;
+}
+
+table#activity-form{
+    border-collapse: collapse;
+    width: 100%;
+}
+
+table#activity-form td:first-child{
+    text-align: right;
+    padding-right: 20px;
+}
+
+td + td{
+    max-width: 300px;
+}
+
+table#activity-form input,
+table#activity-form select,
+table#activity-form textarea{
+    outline: none;
+    padding: 6px 12px;
+    width: 100%;
+    border-radius: 3px;
+    border: 1px solid #d6d6d6;
+    font: inherit;
+    box-sizing: border-box;
+}
+
+table#activity-form td{
+    vertical-align: top;
+}
+
+table#activity-form .label{
+    font-size: 14px;
+}
+
+table#activity-form tr + tr td{
+    padding-top: 12px;
+}
+
+table#activity-form textarea{
+    resize: none;
+}
+
+.form-buttons{
+    text-align: right;
 }

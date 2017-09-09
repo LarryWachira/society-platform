@@ -7,7 +7,8 @@ const SocietyInfo = (props) => {
                 <span className="number">{props.score}</span>
                 <span className="label">Society points</span>
             </div>
-            <button id="edit-button">Edit page</button>
+            <button id="edit-button" className="right" onClick={props.showForm}>Log an activity</button>
+            <div className="clearfix"></div>
         </div>
     );
 }
