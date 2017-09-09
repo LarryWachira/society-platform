@@ -5,8 +5,8 @@ import os
 from flask_migrate import Migrate, MigrateCommand
 from flask_script import Manager, Shell, prompt_bool
 
-from api.models import db
 from api.initial_data import all_data
+from api.models import db
 from app import create_app
 
 app = create_app(environment=os.environ.get('APP_SETTINGS', "Development"))
