@@ -11,9 +11,9 @@ class ModelsTestCase(BaseTestCase):
         )
 
         user = User(
+            uuid="-Ktest",
             name="dan",
             email="user@mail.com",
-            role="member",
             country="Kenya",
             society=society
         )
