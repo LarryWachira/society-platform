@@ -1,6 +1,12 @@
 """Conatain App configurations."""
 import os
 
+from dotenv import load_dotenv
+
+
+dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
+load_dotenv(dotenv_path)
+
 
 class Config(object):
     """Model base config object that can inherited by other configs."""
@@ -11,6 +17,7 @@ class Config(object):
     DEBUG = False
     TESTING = False
     DEVELOPMENT = False
+    BASE_DIR = os.path.dirname(__file__)
 
 
 class Development(Config):
@@ -35,8 +42,8 @@ class Testing(Config):
     DEBUG = True
     TESTING = True
     SQLALCHEMY_TRACK_MODIFICATIONS = True
-    SQLALCHEMY_DATABASE_URI = os.environ.get('TEST_DATABASE') or \
-        'sqlite:///:memory:'
+    SQLALCHEMY_DATABASE_URI = "sqlite:///" + Config.BASE_DIR \
+                              + "/tests/test_db.sqlite"
 
 
 class Staging(Development):
