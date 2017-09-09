@@ -1,12 +1,8 @@
 #app-header{
     position: relative;
-    height: 480px;
-    background: #000;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-image: url(../images/cover.jpg);
     color: white;
+    height: 100vh;
+    box-sizing: border-box;
 }
 
 #app-header:after{
@@ -77,7 +73,7 @@ a.account-action:hover{
     position: absolute;
     bottom: 0;
     left: 0;
-    margin-bottom: 65px;
+    margin-bottom: 120px;
     display: flex;
     align-items: flex-end;
 }
@@ -95,7 +91,7 @@ a.account-action:hover{
     position: absolute;
     bottom: 0;
     right: 0;
-    margin-bottom: 65px;
+    margin-bottom: 120px;
 }
 
 #points-indicator{

@@ -6,6 +6,10 @@ body{
     line-height: 1.8em;
 }
 
+.flex{
+    display: flex;
+}
+
 .container{
     width: 80%;
     min-width: 800px;
@@ -113,6 +117,11 @@ body{
 
 #content{
     display: flex;
+    background: #000;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-image: url(../images/cover.jpg);
 }
 
 #app-content{
@@ -126,10 +135,10 @@ body{
     color: white;
     padding-top: 60px;
     transition: all 200ms ease-in-out;
+    box-sizing: border-box;
 }
 
 .sidebar-collapsed #sidebar{
-    flex: 0;
     width: 0;
 }
 

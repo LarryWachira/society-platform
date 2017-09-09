@@ -1,22 +1,13 @@
-body{
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    font-family: 'Open Sans', sans-serif;
-    color: #555
-}
-
 .container{
     width: 500px;
 }
 
-#logo{
+#s-logo{
     width: 250px;
     margin: 120px auto 35px;
 }
 
-#logo img{
+#s-logo img{
     display: block;
     width: 100%;
 }
