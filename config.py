@@ -39,13 +39,10 @@ class Testing(Config):
         'sqlite:///:memory:'
 
 
-class Staging(Config):
+class Staging(Development):
     """Model Staging enviroment config object."""
 
-    DEBUG = True
-    DEVELOPMENT = True
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')
-    SQLALCHEMY_TRACK_MODIFICATIONS = True
 
 
 configuration = {
