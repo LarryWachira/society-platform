@@ -6,12 +6,12 @@ from flask_migrate import Migrate, MigrateCommand
 from flask_script import Manager, Shell, prompt_bool
 
 from api.initial_data import all_data
-from api.models import db
+from api.models import Activity, Point, Society, User, db
 from app import create_app
 
 app = create_app(environment=os.environ.get('APP_SETTINGS', "Development"))
 manager = Manager(app)
-Migrate(app=app, db=db)
+migrate = Migrate(app, db)
 
 
 @manager.command
@@ -38,7 +38,7 @@ def create_database():
 
 @manager.command
 def seed():
-    """Seed database tables with initial data"""
+    """Seed database tables with initial data."""
     if prompt_bool("\n\n\nThis operation will remove all existing data."
                    " Are you sure you want to continue?"):
         try:
@@ -48,17 +48,22 @@ def seed():
             print("\n\n\nTables seeded successfully.\n\n\n")
         except Exception:
             db.session.rollback()
-            print("\n\n\nFailed, make sure your database server is running!\n\n\n")
+            print("\n\n\nFailed, make sure your database server is"
+                  " running!\n\n\n")
 
 
 def shell():
     """Make a shell/REPL context available."""
     return dict(app=create_app(),
-                db=db)
+                db=db,
+                User=User,
+                Society=Society,
+                Activity=Activity,
+                Point=Point)
 
 
 manager.add_command("shell", Shell(make_context=shell))
-manager.add_command("database", MigrateCommand)
+manager.add_command("db", MigrateCommand)
 
 
 if __name__ == "__main__":

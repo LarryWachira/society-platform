@@ -35,6 +35,15 @@ class Base(db.Model):
     name = db.Column(db.String)
     photo = db.Column(db.String)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    description = db.Column(db.String)
+
+    def __repr__(self):
+        """Repl rep of models."""
+        return f"{type(self).__name__}(id='{self.uuid}', name='{self.name}')"
+
+    def __str__(self):
+        """Return string representation."""
+        return self.name
 
     def save(self):
         """Save the object in DB.
@@ -84,11 +93,13 @@ class User(Base):
     """Models Users."""
 
     __tablename__ = 'users'
-    uuid = db.Column(db.String, primary_key=True)
+    user_id = db.Column(db.String, unique=True)
     email = db.Column(db.String)
     role = db.Column(db.String, default="member")
     country = db.Column(db.String)
+
     society_id = db.Column(db.String, db.ForeignKey('societies.uuid'))
+
     points = db.relationship('Point', backref='user', lazy='dynamic')
     activities = db.relationship('Activity', secondary='user_activity',
                                  lazy='dynamic', backref='users')
@@ -103,11 +114,22 @@ class Society(Base):
     __tablename__ = 'societies'
     color_scheme = db.Column(db.String)
     logo = db.Column(db.String)
+    _total_points = db.Column(db.Integer, default=0)
+
     members = db.relationship('User', backref='society', lazy='dynamic')
     points = db.relationship('Point', backref='society', lazy='dynamic')
 
     def __repr__(self):
         return '<Society {}>'.format(self.name)
+
+    @property
+    def total_points(self):
+        """Keep track of all society points."""
+        return self._total_points
+
+    @total_points.setter
+    def total_points(self, point):
+        self._total_points += point.value
 
 
 class Activity(Base):
@@ -116,6 +138,7 @@ class Activity(Base):
     __tablename__ = 'activities'
     value = db.Column(db.Integer)
     description = db.Column(db.String, nullable=False)
+
     points = db.relationship('Point', backref='activity', lazy='dynamic')
 
     def __repr__(self):
@@ -130,6 +153,9 @@ class Point(Base):
     status = db.Column(db.String, default='pending')
     approved_at = db.Column(db.DateTime)
     approver_id = db.Column(db.String)
+
+    approve_date = db.Column(db.DateTime)
+
     user_id = db.Column(db.String, db.ForeignKey('users.uuid'))
     society_id = db.Column(db.String, db.ForeignKey('societies.uuid'))
     activity_id = db.Column(db.String, db.ForeignKey('activities.uuid'))

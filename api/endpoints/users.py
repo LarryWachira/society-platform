@@ -1,5 +1,5 @@
-from flask import jsonify, g
-from flask_restful import Resource
+from flask import g, jsonify
+from flask_restplus import Resource
 
 from ..auth import token_required
 
