@@ -11,6 +11,12 @@ def generate_uuid():
     return str(uuid.uuid1())
 
 
+def camel_case(snake_str):
+    title_str = snake_str.title().replace("_", "")
+
+    return title_str[0].lower() + title_str[1:]
+
+
 # many to many relationship between users and activities
 user_activity = db.Table('user_activity',
                          db.Column('user_uuid', db.String,
@@ -69,7 +75,7 @@ class Base(db.Model):
             A dict object
         """
         dictionary_mapping = {
-            attribute.name: getattr(self, attribute.name)
+            camel_case(attribute.name): getattr(self, attribute.name)
             for attribute in self.__table__.columns}
         return dictionary_mapping
 
@@ -87,6 +93,9 @@ class User(Base):
     activities = db.relationship('Activity', secondary='user_activity',
                                  lazy='dynamic', backref='users')
 
+    def __repr__(self):
+        return '<User {}>'.format(self.name)
+
 
 class Society(Base):
     """Model Societies in Andela."""
@@ -97,6 +106,9 @@ class Society(Base):
     members = db.relationship('User', backref='society', lazy='dynamic')
     points = db.relationship('Point', backref='society', lazy='dynamic')
 
+    def __repr__(self):
+        return '<Society {}>'.format(self.name)
+
 
 class Activity(Base):
     """Model activities available for points."""
@@ -105,6 +117,9 @@ class Activity(Base):
     value = db.Column(db.Integer)
     description = db.Column(db.String, nullable=False)
     points = db.relationship('Point', backref='activity', lazy='dynamic')
+
+    def __repr__(self):
+        return '<Activity {}>'.format(self.name)
 
 
 class Point(db.Model):
@@ -119,3 +134,6 @@ class Point(db.Model):
     user_id = db.Column(db.String, db.ForeignKey('users.uuid'))
     society_id = db.Column(db.String, db.ForeignKey('societies.uuid'))
     activity_id = db.Column(db.String, db.ForeignKey('activities.uuid'))
+
+    def __repr__(self):
+        return '<Point by {}>'.format(self.user)

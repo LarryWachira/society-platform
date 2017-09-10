@@ -1,4 +1,4 @@
-from api.models import Activity, Point, Society, User
+from api.models import Society, User
 from tests.base_test import BaseTestCase
 
 

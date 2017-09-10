@@ -6,24 +6,6 @@ from jose import jwt, JWTError, ExpiredSignatureError
 from .models import User
 
 
-# define a user class
-class CurrentUser(object):
-    def __init__(self, user_id, name, email, roles, image_url):
-        self.uuid = user_id
-        self.roles = roles
-        self.email = email
-        self.name = name
-        self.photo = image_url
-
-    def __repr__(self):
-        return ("<CurrentUser \n"
-                "uuid - {} \n"
-                "name - {} \n"
-                "email - {} \n"
-                "role - {} >").format(self.uuid, self.name,
-                                      self.email, self.roles)
-
-
 # authorization decorator
 def token_required(f):
     @wraps(f)
@@ -75,26 +57,24 @@ def token_required(f):
                 "UserInfo"].keys() != expected_user_info_format.keys():
             return unauthorized_response
         else:
-            uuid = payload["UserInfo"]["id"],
-            name = payload["UserInfo"]["name"],
-            email = payload["UserInfo"]["email"],
+            uuid = payload["UserInfo"]["id"]
+            name = payload["UserInfo"]["name"]
+            email = payload["UserInfo"]["email"]
             photo = payload["UserInfo"]["picture"]
             roles = payload["UserInfo"]["roles"]
 
+            user = User.query.get(uuid)
+
             # save user to db if they haven't been saved yet
-            if not User.query.get(payload["UserInfo"]["id"]):
+            if not user:
                 user = User(
                     uuid=uuid, name=name, email=email, photo=photo
                 )
                 user.save()
 
-            # instantiate current user object
-            current_user = CurrentUser(
-                uuid, name, email, roles, photo
-            )
-
             # set current user in flask global variable, g
-            g.current_user = current_user
+            user.roles = roles
+            g.current_user = user
 
             # now return wrapped function
             return f(*args, **kwargs)
@@ -105,7 +85,7 @@ def roles_required(roles):  # roles should be a list
     def check_user_role(f):
         @wraps(f)
         def decorated(*args, **kwargs):
-            if g.current_user.role not in roles:
+            if g.current_user.society_position not in roles:
                 return {
                     "message": "You're unauthorized to perform this operation"
                 }, 401
