@@ -71,6 +71,7 @@ class BaseTestCase(TestCase):
                               photo="url/imgae",
                               logo="url/image",
                               color_scheme="#00ff4567")
+        self.phenix.save()
 
         # mock points
         self.point = Point(value=2500,
