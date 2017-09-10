@@ -71,7 +71,9 @@ def create_app(environment="Development"):
     )
 
     # points endpoints
-    api.add_resource(PointResource, '/api/v1/points/', '/api/v1/points')
+    api.add_resource(
+        PointResource, '/api/v1/points', '/api/v1/points/',
+        endpoint="point")
 
     # handle default 404 exceptions with a custom response
     @app.errorhandler(404)
