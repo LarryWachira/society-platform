@@ -122,12 +122,10 @@ class Activity(Base):
         return '<Activity {}>'.format(self.name)
 
 
-class Point(db.Model):
+class Point(Base):
     """To contain points fields."""
 
     __tablename__ = 'points'
-    uuid = db.Column(db.String, primary_key=True, default=generate_uuid)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
     value = db.Column(db.Integer, nullable=False)
     status = db.Column(db.String, default='pending')
     approved_at = db.Column(db.DateTime)

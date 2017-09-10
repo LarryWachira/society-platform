@@ -44,7 +44,7 @@ class Testing(Config):
 class Staging(Development):
     """Model Staging enviroment config object."""
 
-    DEBUG = True
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')
 
 
 configuration = {
