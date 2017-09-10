@@ -19,6 +19,8 @@ class Config(object):
     DEVELOPMENT = False
     BASE_DIR = os.path.dirname(__file__)
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')
+    PAGE_LIMIT = 10
+    DEFAULT_PAGE = 1
 
 
 class Development(Config):

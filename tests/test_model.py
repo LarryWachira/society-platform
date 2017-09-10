@@ -9,7 +9,10 @@ class UserTestCase(BaseTestCase):
 
     def test_models(self):
         society = Society(
-            color_scheme="#dkneif"
+            name="Phoenix",
+            color_scheme="#333333",
+            logo="https://logo.png",
+            photo="http://photo.url2"
         )
 
         user = User(
