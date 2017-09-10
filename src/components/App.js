@@ -4,6 +4,7 @@ import SocietyPage from './pages/SocietyPage';
 import StatsPage from './pages/StatsPage';
 import HomePage from './pages/HomePage';
 import ActivityLogsPage from './pages/ActivityLogsPage';
+import ContributionsPage from './pages/ContributionsPage';
 import ActivityForm from './forms/ActivityForm';
 import Sidebar from './Sidebar';
 import '../static/css/font-awesome.min.css';
@@ -202,6 +203,10 @@ class App extends Component {
                                 <div>
                                     <Route exact path="/" component={() => {
                                         return <HomePage logo={whiteLogo}
+                                            accountAction={this.renderAccountAction()} />
+                                    }} />
+                                    <Route exact path="/contributions" component={() => {
+                                        return <ContributionsPage logo={blueLogo}
                                             accountAction={this.renderAccountAction()} />
                                     }} />
                                     <Route exact path="/logged-activities" component={() => {

@@ -250,3 +250,7 @@ table#activity-form textarea{
 #login-btn:hover{
     opacity: .9;
 }
+
+.contributions td{
+    max-width: 200px;
+}

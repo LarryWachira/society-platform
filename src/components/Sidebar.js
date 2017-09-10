@@ -5,6 +5,7 @@ const Sidebar = props => {
     return (
         <div id="sidebar-content">
             <Link to="/" className="navlink"><i className="fa fa-home"></i> Home</Link>
+            <Link to="/contributions" className="navlink"><i className="fa fa-list-alt"></i> Contributions</Link>
             <Link to="/logged-activities" className="navlink"><i className="fa fa-list-alt"></i> Logged activities</Link>
             <Link to="/stats" className="navlink"><i className="fa fa-area-chart"></i> Stats</Link>
             <span className="navlink-title">Societies</span>

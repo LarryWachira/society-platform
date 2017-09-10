@@ -19,11 +19,11 @@ const StatsPage = props => {
                             <h2 id="page-title">Stats</h2>
                         </header>
                         <div id="">
-                            ujshh
+                            body
                         </div>
                     </div>
                     <aside id="side-content">
-                        
+                        sidebar
                     </aside>
                 </div>
             </div>

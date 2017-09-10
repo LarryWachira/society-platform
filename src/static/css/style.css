@@ -250,6 +250,7 @@ button#submit{
     vertical-align: top;
 }
 
+#activities-table th + th,
 #activities-table td + td{
     padding-right: 30px;
 }
@@ -276,6 +277,10 @@ button#submit{
 
 #activities-table .action.approved{
     background: #009688;
+}
+
+#activities-table .action.pending{
+    background: #9E9E9E;
 }
 
 #activities-table .action:hover{
@@ -306,5 +311,5 @@ button#submit{
 }
 
 .center-text{
-    text-align: center;
+    text-align: center !important;
 }
