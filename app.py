@@ -1,8 +1,10 @@
 """Main app module."""
 from flask import Flask, jsonify
+from flask_restful import Api
 
 from api.models import db
-
+from api.endpoints.activities import ActivitiesAPI
+from api.endpoints.users import UserAPI
 try:
     from .config import configuration
 except ImportError:
@@ -20,6 +22,20 @@ def create_app(enviroment="Development"):
     app = Flask(__name__)
     app.config.from_object(configuration[enviroment])
     db.init_app(app)
+
+    api = Api(app)
+
+    # activities endpoints
+    api.add_resource(
+        ActivitiesAPI, '/api/v1/activities', '/api/v1/activities/',
+        endpoint='activities'
+    )
+
+    # user endpoints
+    api.add_resource(
+        UserAPI, '/api/v1/user/profile', '/api/v1/user/profile',
+        endpoint='user_info'
+    )
 
     # handle default 404 exceptions with a custom response
     @app.errorhandler(404)
