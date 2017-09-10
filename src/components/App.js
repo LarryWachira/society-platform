@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
+import {BrowserRouter, Route, Link} from 'react-router-dom';
+import SocietyPage from './pages/SocietyPage';
+import ActivityForm from './forms/ActivityForm';
 import SocietyInfo from './SocietyInfo';
 import Score from './Score';
-import ActivityForm from './forms/ActivityForm';
+import '../static/css/font-awesome.min.css';
 import '../static/css/page.css';
-import logoWhite from '../static/images/andela-logo-white.png';
+import whiteLogo from '../static/images/andela-logo-white.png';
 
 class App extends Component {
 
@@ -12,22 +15,9 @@ class App extends Component {
         this.bindEvents();
     }
 
-    bindEvents(){
-        this.toggleLogout = this.toggleLogout.bind(this);
-        this.resetUI = this.resetUI.bind(this);
-        this.toggleSidebar = this.toggleSidebar.bind(this);
-        this.onActivityChange = this.onActivityChange.bind(this);
-        this.closeLightbox = this.closeLightbox.bind(this);
-        this.addActivity = this.addActivity.bind(this);
-        this.showActivityForm = this.showActivityForm.bind(this);
-    }
-
-    componentWillMount(){
-        this.state = this.getDefaultState();
-    }
-
     getDefaultState(){
         return {
+            isLoggedIn: false,
             iconClicked: false,
             showSidebar: false,
             showActivityForm: false,
@@ -38,6 +28,21 @@ class App extends Component {
                 isWorking: false
             }
         };
+    }
+
+    bindEvents(){
+        this.toggleLogout = this.toggleLogout.bind(this);
+        this.resetUI = this.resetUI.bind(this);
+        this.toggleSidebar = this.toggleSidebar.bind(this);
+        this.onActivityChange = this.onActivityChange.bind(this);
+        this.closeLightbox = this.closeLightbox.bind(this);
+        this.addActivity = this.addActivity.bind(this);
+        this.showActivityForm = this.showActivityForm.bind(this);
+        this.logout = this.logout.bind(this);
+    }
+
+    componentWillMount(){
+        this.state = this.getDefaultState();
     }
 
     closeLightbox(){
@@ -115,6 +120,10 @@ class App extends Component {
         this.setState(state);
     }
 
+    logout(){
+
+    }
+
     toggleSidebar(event){
         event.preventDefault();
         event.stopPropagation();
@@ -148,41 +157,52 @@ class App extends Component {
                 isWorking={this.state.newActivity.isWorking} />);
     }
 
+    renderAccountAction(){
+        if (this.state.isLoggedIn){
+            return (
+                <div>
+                    <div id="account-icon" onClick={this.toggleLogout}>
+                        <img alt="Profile" src="http://via.placeholder.com/45x45" />
+                    </div>
+                    {this.state.showLogout? 
+                        <div id="account-actions">
+                            <a href="" className="account-action">Logout</a>
+                        </div>:
+                        <span />
+                        }
+                </div>
+            );
+        }
+
+        return (
+            <Link id="login-btn" to='/login'>Login</Link>
+        );
+    }
+
     render() {
         return (
-                <div onClick={this.resetUI}>
-                    <div id="content" className={this.getSidebarClass()}>
+                <div>
+                    <div id="content" 
+                        className={this.getSidebarClass()} 
+                        style={{backgroundImage: `url(https://photos.smugmug.com/Archives/Kenya/Internal-Events/Andela-Kenya-Turns-2/i-n6gSgRB/1/53c1e45f/X3/AndelaKenya2ndAnniversary_10-X3.jpg)`}}>
                     <aside id="sidebar">
+                        <Link to="/" className="navlink"><i className="fa fa-home"></i> Home</Link>
+                        <Link to="/" className="navlink"><i className="fa fa-area-chart"></i> Stats</Link>
+                        <span className="navlink-title">Societies</span>
+                        <Link to="/" className="navlink"><i className="fa fa-group"></i> Invicticus</Link>
+                        <Link to="/" className="navlink"><i className="fa fa-group"></i> Phoenix</Link>
+                        <Link to="/" className="navlink"><i className="fa fa-group"></i> Istelle</Link>
+                        <Link to="/" className="navlink"><i className="fa fa-group"></i> Sparks</Link>
                     </aside>
-                    <div id="app-content">
-                            <a href="" id="menu-icon" onClick={this.toggleSidebar}>
-                                <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 139 139"><line className="st0" id="XMLID_6_" x1="26.5" x2="112.5" y1="46.3" y2="46.3"/><line className="st0" id="XMLID_9_" x1="26.5" x2="112.5" y1="92.7" y2="92.7"/><line className="st0" id="XMLID_8_" x1="26.5" x2="112.5" y1="69.5" y2="69.5"/></svg>
-                            </a>
-                            <div id="app-header">
-                                <div className="container">
-                                    <a href="" id="logo">
-                                        <img src={logoWhite} alt="Logo" />
-                                    </a>
-                                    <div id="account-tools">
-                                        <div id="account-icon" onClick={this.toggleLogout}>
-                                            <img alt="Profile" src="http://via.placeholder.com/45x45" />
-                                        </div>
-                                        {this.state.showLogout? 
-                                            <div id="account-actions">
-                                                <a href="" className="account-action">Logout</a>
-                                            </div>:
-                                            <span />
-                                            }
-                                    </div>
-                        
-                                    <SocietyInfo name="Invicticus" 
-                                        statement="We are invicticus"
-                                        badge="http://via.placeholder.com/150x150" />
-                        
-                                    <Score score="3,382"
-                                        showForm={this.showActivityForm} />
-                                </div>
-                            </div>
+                    <div id="app-content" onClick={this.resetUI}>
+                        <a href="" id="menu-icon" onClick={this.toggleSidebar}>
+                            <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 139 139"><line className="st0" id="XMLID_6_" x1="26.5" x2="112.5" y1="46.3" y2="46.3"/><line className="st0" id="XMLID_9_" x1="26.5" x2="112.5" y1="92.7" y2="92.7"/><line className="st0" id="XMLID_8_" x1="26.5" x2="112.5" y1="69.5" y2="69.5"/></svg>
+                        </a>
+
+                        <SocietyPage logo={whiteLogo}
+                        accountAction={this.renderAccountAction()}
+                        logout={this.logout}
+                        showActivityForm={this.showActivityForm} />
                     </div>
                     
                 </div>

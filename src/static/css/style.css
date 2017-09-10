@@ -117,11 +117,9 @@ body{
 
 #content{
     display: flex;
-    background: #000;
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
-    background-image: url(../images/cover.jpg);
 }
 
 #app-content{
@@ -130,12 +128,38 @@ body{
 
 #sidebar{
     height: 100vh;
-    width: 280px;
+    min-height: 500px;
+    width: 240px;
     background: #3F51B5;
     color: white;
     padding-top: 60px;
     transition: all 200ms ease-in-out;
     box-sizing: border-box;
+    overflow: hidden;
+    font-size: 14px;
+}
+
+#sidebar .fa{
+    margin-right: 12px;
+}
+
+.navlink-title{
+    display: block;
+    padding: 10px 22px;
+    font-size: 12px;
+    text-transform: uppercase;
+    margin-top: 10px;
+}
+
+.navlink{
+    display: block;
+    padding: 6px 22px;
+    color: white;
+    text-decoration: none;
+}
+
+.navlink:hover{
+    background: rgba(0, 0, 0, .1)
 }
 
 .sidebar-collapsed #sidebar{
