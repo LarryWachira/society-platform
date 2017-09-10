@@ -129,6 +129,7 @@ class Point(db.Model):
     uuid = db.Column(db.String, primary_key=True, default=generate_uuid)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     value = db.Column(db.Integer, nullable=False)
+    status = db.Column(db.String, default='pending')
     approved_at = db.Column(db.DateTime)
     approver_id = db.Column(db.String)
     user_id = db.Column(db.String, db.ForeignKey('users.uuid'))
