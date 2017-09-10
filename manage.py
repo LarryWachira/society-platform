@@ -9,7 +9,7 @@ from api.models import db
 from api.initial_data import all_data
 from app import create_app
 
-app = create_app(enviroment=os.environ.get('APP_SETTINGS', "Development"))
+app = create_app(environment=os.environ.get('APP_SETTINGS', "Development"))
 manager = Manager(app)
 Migrate(app=app, db=db)
 

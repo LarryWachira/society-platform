@@ -18,6 +18,7 @@ class Config(object):
     TESTING = False
     DEVELOPMENT = False
     BASE_DIR = os.path.dirname(__file__)
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')
 
 
 class Development(Config):
@@ -26,14 +27,8 @@ class Development(Config):
     DEBUG = True
     DEVELOPMENT = True
     SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE') or \
-        'sqlite:///:memory:'
+        "sqlite:///" + Config.BASE_DIR + "/dev_db.sqlite"
     SQLALCHEMY_TRACK_MODIFICATIONS = True
-
-
-class Production(Config):
-    """Model Production enviroment config object."""
-
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')
 
 
 class Testing(Config):
@@ -49,12 +44,12 @@ class Testing(Config):
 class Staging(Development):
     """Model Staging enviroment config object."""
 
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')
+    DEBUG = True
 
 
 configuration = {
     "Testing": Testing,
     "Development": Development,
-    "Production": Production,
+    "Production": Config,
     "Staging": Staging
 }

@@ -1,0 +1,22 @@
+{
+    "name": "andela_societies",
+    "scripts": {},
+    "env": {
+        "FLASK_APP": {
+            "required": true
+        },
+        "APP_SETTINGS": {
+            "required": true
+        },
+        "DATABASE_URL": {
+            "required": true
+        }
+    },
+    "formation": {},
+    "addons": [
+        "heroku-postgresql"
+    ],
+    "buildpacks": [{
+        "url": "heroku/python"
+    }]
+}
