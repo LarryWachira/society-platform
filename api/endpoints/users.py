@@ -1,3 +1,4 @@
+"""Module for Users in platform."""
 from flask import g, jsonify
 from flask_restplus import Resource
 
@@ -5,9 +6,11 @@ from ..auth import token_required
 
 
 class UserAPI(Resource):
+    """User Resource."""
 
     @token_required
     def get(self):
+        """Get user information."""
         _user = g.current_user
         user = _user.serialize()
 

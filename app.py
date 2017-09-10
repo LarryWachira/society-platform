@@ -1,15 +1,16 @@
 """ Main app module. """
 import os
 
+from api.endpoints.activities import ActivitiesAPI
+from api.endpoints.point import PointResource
+from api.endpoints.societies import SocietyResource
+from api.endpoints.users import UserAPI
+from api.models import db
 from flask import Flask, jsonify
 from flask_cors import CORS
 from flask_restplus import Api
 from flask_sslify import SSLify
 
-from api.endpoints.activities import ActivitiesAPI
-from api.endpoints.users import UserAPI
-from api.models import db
-from api.endpoints.societies import SocietyResource
 try:
     from .config import configuration
 except ImportError:
@@ -55,17 +56,21 @@ def create_app(environment="Development"):
         UserAPI, '/api/v1/user/profile', '/api/v1/user/profile/',
         endpoint='user_info'
     )
-    api.add_resource(SocietyResource,
-        "/api/v1/societies", "/api/v1/societies/",
+
+    # society endpoints
+    api.add_resource(
+        SocietyResource, "/api/v1/societies", "/api/v1/societies/",
         endpoint="society"
     )
-    api.add_resource(SocietyResource,
-        "/api/v1/societies/<string:society_id>", "/api/v1/societies/<string:society_id>/",
+
+    api.add_resource(
+        SocietyResource,
+        "/api/v1/societies/<string:society_id>",
+        "/api/v1/societies/<string:society_id>/",
         endpoint="society_detail"
     )
 
-    # all urls/routes should be configured/added here
-    from api.points_endpoint import PointResource
+    # points endpoints
     api.add_resource(PointResource, '/api/v1/points/', '/api/v1/points')
 
     # handle default 404 exceptions with a custom response

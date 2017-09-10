@@ -10,6 +10,7 @@ from jose import jwt
 
 class BaseTestCase(TestCase):
     """Contain utility required for testing."""
+
     exp_date = datetime.datetime.utcnow()
     test_payload = {
         "UserInfo": {
@@ -29,7 +30,6 @@ class BaseTestCase(TestCase):
 
     def setUp(self):
         """Setup function to configure test enviroment."""
-
         self.app = create_app("Testing")
         self.app_context = self.app.app_context()
         self.app_context.push()
@@ -46,13 +46,13 @@ class BaseTestCase(TestCase):
         # mock user
         self.member = User(email="someonecool.andela.com",
                            name="thecoolest",
-                           user_id="-Ksomeid",
+                           uuid="-Ksomeid",
                            role="member",
                            country="ke/ug/niger/ny/sa/tz/rw")
 
         self.admin = User(email="coolAdmin.andela.com",
                           name="thecoolestAdmin",
-                          user_id="-KsomeidAdmin",
+                          uuid="-KsomeidAdmin",
                           role="admin",
                           country="ke/ug/niger/ny/sa/tz/rw")
 
@@ -85,8 +85,7 @@ class BaseTestCase(TestCase):
 
     @staticmethod
     def generate_token(payload):
-        """ Generates token """
-
+        """Generate token."""
         token = jwt.encode(payload, "secret", algorithm="HS256")
         return token
 

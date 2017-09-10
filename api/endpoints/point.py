@@ -1,9 +1,10 @@
 """Module for Points Resources."""
-
+from api.auth import roles_required, token_required
+from api.models import Activity, Point, Society, User
+from flask import g
 from flask_restplus import Resource, reqparse
 
-from api.helper import serialize_point
-from api.models import Activity, Point, Society, User
+from .helper import serialize_point
 
 
 class PointResource(Resource):
@@ -27,7 +28,7 @@ class PointResource(Resource):
         society_id = args.get('society_id')
 
         # Validation
-        if user_id and not User.query.filter_by(user_id=user_id).first():
+        if user_id and not User.query.filter_by(uuid=user_id).first():
             return {"error": "Invalid User id"}, 400
 
         elif activity_id and not Activity.query.filter_by(
@@ -40,8 +41,7 @@ class PointResource(Resource):
 
         response = {}
         if user_id and activity_id:
-            user = User.query.filter_by(user_id=user_id).first()
-            values = Point.query.filter_by(user_id=user.uuid)
+            values = Point.query.filter_by(user_id=user_id)
             response["points"] = list(map(
                 serialize_point,
                 values.filter_by(activity_id=activity_id).all()))
@@ -53,8 +53,7 @@ class PointResource(Resource):
                 values.filter_by(activity_id=activity_id).all()))
 
         elif user_id:
-            user = User.query.filter_by(user_id=user_id).first()
-            values = Point.query.filter_by(user_id=user.uuid)
+            values = Point.query.filter_by(user_id=user_id)
             response["points"] = list(map(serialize_point, values.all()))
 
         elif activity_id:
@@ -96,19 +95,16 @@ class PointResource(Resource):
 
         return response, 200
 
+    @token_required
     def post(self):
         """Post points earned for an activity."""
-        self.parser.add_argument('user_id', required=True)
         self.parser.add_argument('activity_id', required=True)
         self.parser.add_argument('value', required=True, type=int)
         self.parser.add_argument('name', required=True)
         self.parser.add_argument('description')
         args = self.parser.parse_args()
 
-        user = User.query.filter_by(user_id=args.get('user_id')).first()
-
-        if not user:
-            return {"error": "Invalid user Id"}, 400
+        user = g.current_user
 
         activity = Activity.query.filter_by(
             uuid=args.get('activity_id')).first()
@@ -118,9 +114,7 @@ class PointResource(Resource):
         if not args.get('value'):
             return {"error": "Value can not be less than 1."}, 400
 
-        activity = Activity.query.filter_by(uuid=args.get(
-            'activity_id')).first()
-        if activity.value < 1:
+        if args.get('value') < 1:
             return {"error": "Quantity must be greater than 1."}, 400
 
         value = activity.value * args.get('value')
@@ -138,6 +132,7 @@ class PointResource(Resource):
             return point.serialize(), 201
         return {"error": f"Server unable to create point:{point.name}."}, 500
 
+    @token_required
     def put(self):
         """Modify points submitted."""
         self.parser.add_argument('point_id', required=True)
@@ -161,6 +156,10 @@ class PointResource(Resource):
             return {"error":
                     "Provide value or description to update."}, 422
 
+        elif not (point.user_id == g.current_user.uuid):
+            return{"error":
+                   "Permission denied: user not allowed"}, 403
+
         if value:
             point.value = value
 
@@ -174,6 +173,7 @@ class PointResource(Resource):
             return point.serialize(), 200
         return {"error": f"Server unable to update point: {point.name}."}, 500
 
+    @roles_required
     def patch(self):
         """Patch points submitted."""
         STATUS = ["APPROVED", "REJECTED", "INPROGRESS"]
@@ -199,6 +199,7 @@ class PointResource(Resource):
             return point.serialize(), 200
         return {"error": f"Server unable to update point: {point.name}."}, 500
 
+    @token_required
     def delete(self):
         """Delete a given point."""
         self.parser.add_argument('point_id', required=True)
@@ -208,6 +209,10 @@ class PointResource(Resource):
 
         if not point:
             return {"error": "Inavlid point id"}, 400
+
+        elif not (point.user_id == g.current_user.uuid):
+            return{"error":
+                   "Permission denied: user not allowed"}, 403
 
         if point.delete():
             return {"data": "deleted succesful."}, 200

@@ -1,3 +1,4 @@
+"""Module for Activities in Andela."""
 from flask import jsonify
 from flask_restplus import Resource
 
@@ -6,9 +7,11 @@ from ..models import Activity
 
 
 class ActivitiesAPI(Resource):
+    """Activity Resource."""
 
     @token_required
     def get(self):
+        """Get information on societies."""
         activities = Activity.query.all()
 
         activities_list = []
