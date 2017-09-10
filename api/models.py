@@ -8,10 +8,12 @@ db = SQLAlchemy()
 
 
 def generate_uuid():
+    """Generate unique string."""
     return str(uuid.uuid1())
 
 
 def camel_case(snake_str):
+    """Convert string to camel case."""
     title_str = snake_str.title().replace("_", "")
 
     return title_str[0].lower() + title_str[1:]
@@ -93,7 +95,6 @@ class User(Base):
     """Models Users."""
 
     __tablename__ = 'users'
-    user_id = db.Column(db.String, unique=True)
     email = db.Column(db.String)
     role = db.Column(db.String, default="member")
     country = db.Column(db.String)
@@ -103,9 +104,6 @@ class User(Base):
     points = db.relationship('Point', backref='user', lazy='dynamic')
     activities = db.relationship('Activity', secondary='user_activity',
                                  lazy='dynamic', backref='users')
-
-    def __repr__(self):
-        return '<User {}>'.format(self.name)
 
 
 class Society(Base):
@@ -119,9 +117,6 @@ class Society(Base):
 
     members = db.relationship('User', backref='society', lazy='dynamic')
     points = db.relationship('Point', backref='society', lazy='dynamic')
-
-    def __repr__(self):
-        return '<Society {}>'.format(self.name)
 
     @property
     def total_points(self):
@@ -141,9 +136,6 @@ class Activity(Base):
     description = db.Column(db.String, nullable=False)
 
     points = db.relationship('Point', backref='activity', lazy='dynamic')
-
-    def __repr__(self):
-        return '<Activity {}>'.format(self.name)
 
 
 class Point(Base):

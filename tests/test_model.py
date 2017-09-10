@@ -28,12 +28,12 @@ class UserTestCase(BaseTestCase):
         """Test user properties/relationships."""
         new_user = User(email="someonecool.andela.com",
                         name="thecoolest",
-                        user_id="-Ksomeid",
+                        uuid="-Ksomeid",
                         role="member",
                         country="ke/ug/niger/ny/sa/tz/rw")
         self.assertTrue(new_user.save())
 
-        query_user = User.query.filter_by(user_id="-Ksomeid").first()
+        query_user = User.query.filter_by(uuid="-Ksomeid").first()
         self.assertTrue(query_user == new_user)
 
 
