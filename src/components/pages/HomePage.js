@@ -8,11 +8,23 @@ const HomePage = props => {
             <div className="container">
                 <Link to="/" id="logo">
                     <img src={props.logo} alt="Logo" />
+                    <span>Society Points</span>
                 </Link>
                 <div id="account-tools">
                     {props.accountAction}
                 </div>
-                
+                <div id="page-content">
+                    <div id="main-page-content">
+                        <header id="page-header">
+                            <h2 id="page-title">Stats</h2>
+                        </header>
+                        <div id="">
+                        </div>
+                    </div>
+                    <aside id="side-content">
+                        
+                    </aside>
+                </div>
             </div>
         </div>
     );

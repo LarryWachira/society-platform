@@ -9,6 +9,7 @@ const SocietyPage = props => {
             <div className="container">
                 <Link to="/" id="logo">
                     <img src={props.logo} alt="Logo" />
+                    <span>Society Points</span>
                 </Link>
                 <div id="account-tools">
                     {props.accountAction}

@@ -26,13 +26,26 @@
 
 #logo{
     display: block;
-    width: 45px;
-    height: 45px;
+    text-decoration: none;
+    user-select: none;
 }
 
 #logo img{
-    display: block;
-    width: 100%;
+    display: inline-block;
+    width: 45px;
+    height: 45px;
+    vertical-align: middle;
+}
+
+#logo span{
+    vertical-align: middle;
+    font-size: 22px;
+    margin-left: 12px;
+    color: #eee;
+}
+
+#logo span.blue-text{
+    color: #3459db;
 }
 
 #account-tools{

@@ -8,6 +8,7 @@ const ActivityLogsPage = props => {
             <div className="container">
                 <Link to="/" id="logo">
                     <img src={props.logo} alt="Logo" />
+                    <span className="blue-text">Society Points</span>
                 </Link>
                 <div id="account-tools">
                     {props.accountAction}
