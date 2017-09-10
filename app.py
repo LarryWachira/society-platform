@@ -1,6 +1,8 @@
-"""Main app module."""
+""" Main app module. """
 from flask import Flask, jsonify
 from flask_restful import Api
+from flask_sslify import SSLify
+from flask_cors import CORS
 
 from api.models import db
 from api.endpoints.activities import ActivitiesAPI
@@ -11,7 +13,7 @@ except ImportError:
     from config import configuration
 
 
-def create_app(enviroment="Development"):
+def create_app(environment="Development"):
     """Factory Method that creates an instance of the app with the given config.
 
     Args:
@@ -20,8 +22,15 @@ def create_app(enviroment="Development"):
         app (Flask): it returns an instance of Flask.
     """
     app = Flask(__name__)
-    app.config.from_object(configuration[enviroment])
+    app.config.from_object(configuration[environment])
     db.init_app(app)
+
+    # to redirect all incoming production requests to https
+    if environment.lower() == "production":
+        sslify = SSLify(app, subdomains=True, permanent=True)
+
+    # enable cross origin resource sharing
+    CORS(app)
 
     api = Api(app)
 
