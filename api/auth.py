@@ -99,3 +99,16 @@ def token_required(f):
             # now return wrapped function
             return f(*args, **kwargs)
     return decorated
+
+
+def roles_required(roles):  # roles should be a list
+    def check_user_role(f):
+        @wraps(f)
+        def decorated(*args, **kwargs):
+            if g.current_user.role not in roles:
+                return {
+                    "message": "You're unauthorized to perform this operation"
+                }, 401
+            return f(*args, **kwargs)
+        return decorated
+    return check_user_role
