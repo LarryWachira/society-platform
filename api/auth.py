@@ -1,9 +1,10 @@
+import random
 from functools import wraps
 
-from flask import g, request, jsonify
-from jose import jwt, JWTError, ExpiredSignatureError
+from flask import g, jsonify, request
+from jose import ExpiredSignatureError, JWTError, jwt
 
-from .models import User
+from .models import Society, User
 
 
 # authorization decorator
@@ -70,6 +71,8 @@ def token_required(f):
                 user = User(
                     uuid=uuid, name=name, email=email, photo=photo
                 )
+
+                user.society = random.choice(Society.query.all())
                 user.save()
 
             # set current user in flask global variable, g
