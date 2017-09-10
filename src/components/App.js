@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
-import {BrowserRouter, Route, Link} from 'react-router-dom';
+import {BrowserRouter, Route} from 'react-router-dom';
 import SocietyPage from './pages/SocietyPage';
+import StatsPage from './pages/StatsPage';
+import HomePage from './pages/HomePage';
+import ActivityLogsPage from './pages/ActivityLogsPage';
 import ActivityForm from './forms/ActivityForm';
-import SocietyInfo from './SocietyInfo';
-import Score from './Score';
+import Sidebar from './Sidebar';
 import '../static/css/font-awesome.min.css';
-import '../static/css/page.css';
+import '../static/css/page.css'; 
 import whiteLogo from '../static/images/andela-logo-white.png';
+import blueLogo from '../static/images/andela-logo-blue.png'; 
 
 class App extends Component {
 
@@ -120,8 +123,12 @@ class App extends Component {
         this.setState(state);
     }
 
-    logout(){
+    login(){
 
+    }
+
+    logout(){
+        
     }
 
     toggleSidebar(event){
@@ -175,40 +182,51 @@ class App extends Component {
         }
 
         return (
-            <Link id="login-btn" to='/login'>Login</Link>
+            <a id="login-btn">Login</a>
         );
     }
 
     render() {
         return (
-                <div>
-                    <div id="content" 
-                        className={this.getSidebarClass()} 
-                        style={{backgroundImage: `url(https://photos.smugmug.com/Archives/Kenya/Internal-Events/Andela-Kenya-Turns-2/i-n6gSgRB/1/53c1e45f/X3/AndelaKenya2ndAnniversary_10-X3.jpg)`}}>
-                    <aside id="sidebar">
-                        <Link to="/" className="navlink"><i className="fa fa-home"></i> Home</Link>
-                        <Link to="/" className="navlink"><i className="fa fa-area-chart"></i> Stats</Link>
-                        <span className="navlink-title">Societies</span>
-                        <Link to="/" className="navlink"><i className="fa fa-group"></i> Invicticus</Link>
-                        <Link to="/" className="navlink"><i className="fa fa-group"></i> Phoenix</Link>
-                        <Link to="/" className="navlink"><i className="fa fa-group"></i> Istelle</Link>
-                        <Link to="/" className="navlink"><i className="fa fa-group"></i> Sparks</Link>
-                    </aside>
-                    <div id="app-content" onClick={this.resetUI}>
-                        <a href="" id="menu-icon" onClick={this.toggleSidebar}>
-                            <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 139 139"><line className="st0" id="XMLID_6_" x1="26.5" x2="112.5" y1="46.3" y2="46.3"/><line className="st0" id="XMLID_9_" x1="26.5" x2="112.5" y1="92.7" y2="92.7"/><line className="st0" id="XMLID_8_" x1="26.5" x2="112.5" y1="69.5" y2="69.5"/></svg>
-                        </a>
-
-                        <SocietyPage logo={whiteLogo}
-                        accountAction={this.renderAccountAction()}
-                        logout={this.logout}
-                        showActivityForm={this.showActivityForm} />
+                <BrowserRouter>
+                    <div>
+                        <div id="content" 
+                            className={this.getSidebarClass()}>
+                        <aside id="sidebar">
+                            <Route exact path="*" component={Sidebar} />
+                        </aside>
+                        <div id="app-content" onClick={this.resetUI}>
+                            <a href="" id="menu-icon" onClick={this.toggleSidebar}>
+                                <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 139 139"><line className="st0" id="XMLID_6_" x1="26.5" x2="112.5" y1="46.3" y2="46.3"/><line className="st0" id="XMLID_9_" x1="26.5" x2="112.5" y1="92.7" y2="92.7"/><line className="st0" id="XMLID_8_" x1="26.5" x2="112.5" y1="69.5" y2="69.5"/></svg>
+                            </a>
+                                <div>
+                                    <Route exact path="/" component={() => {
+                                        return <HomePage logo={whiteLogo}
+                                            accountAction={this.renderAccountAction()} />
+                                    }} />
+                                    <Route exact path="/logged-activities" component={() => {
+                                        return <ActivityLogsPage logo={blueLogo}
+                                            accountAction={this.renderAccountAction()} />
+                                    }} />
+                                    <Route exact path="/society/" component={() => {
+                                        return <SocietyPage logo={whiteLogo}
+                                            accountAction={this.renderAccountAction()}
+                                            logout={this.logout}
+                                            login={this.login}
+                                            showActivityForm={this.showActivityForm} /> 
+                                    }} />
+                                    <Route exact path="/stats" component={() => {
+                                        return <StatsPage logo={blueLogo}
+                                                    accountAction={this.renderAccountAction()} />
+                                    }} />
+                                </div>
+                        </div>
+                        
                     </div>
                     
+                    {this.renderActivityForm()}
                 </div>
-                
-                {this.renderActivityForm()}
-            </div>
+            </BrowserRouter>
     );
   }
 }

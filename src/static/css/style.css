@@ -6,6 +6,10 @@ body{
     line-height: 1.8em;
 }
 
+.no-content:before, .no-content:after{
+    content: none !important
+}
+
 .flex{
     display: flex;
 }
@@ -143,6 +147,10 @@ body{
     margin-right: 12px;
 }
 
+#sidebar-content{
+    width: 240px;
+}
+
 .navlink-title{
     display: block;
     padding: 10px 22px;
@@ -167,8 +175,8 @@ body{
 }
 
 .st0{
-    fill: #fff;
-    stroke:#fff; 
+    fill: #ccc;
+    stroke:#ccc; 
     stroke-width:6;
     stroke-miterlimit:10
 }
@@ -196,4 +204,107 @@ button#submit{
     margin-left: 12px;
     background: #059c80;
     color: white;
+}
+
+#page-content{
+    color: #555;
+    display: flex;
+    padding-top: 30px;
+}
+
+#main-page-content{
+    width: 70%;
+    padding-right: 20px;
+}
+
+#side-content{
+    padding-left: 20px;
+}
+
+#page-header{
+    
+}
+
+#page-title{
+    font-size: 24px;
+    font-weight: normal;
+}
+
+#activities-table{
+    width: 100%;
+    margin-top: 40px;
+    border-collapse: collapse;
+}
+
+#activities-table thead{
+    border-bottom: 1px solid #eee;
+}
+
+#activities-table th{
+    text-align: left;
+    font-weight: normal;
+}
+
+#activities-table td{
+    padding: 12px 0;
+    vertical-align: top;
+}
+
+#activities-table td + td{
+    padding-right: 30px;
+}
+
+#activities-table tbody td{
+    border-bottom: 1px solid #eee;
+    font-size: 13px;    
+}
+#activities-table tbody tr:last-child td{
+    border-bottom: 0;
+}
+
+#activities-table .action{
+    display: inline-block;
+    padding: 8px;
+    cursor: pointer;
+    font-size: 20px;
+    background: #2196F3;
+    text-align: center;
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, .6);
+    color: white;
+    transition: all .2s;
+}
+
+#activities-table .action.approved{
+    background: #009688;
+}
+
+#activities-table .action:hover{
+    box-shadow: 1px 1px 15px rgba(0, 0, 0, .6);
+    
+}
+
+#activities-table .activity-type{
+    display: block;
+    font-size: 14px;
+}
+
+#activities-table .comment{
+    margin: 0;
+    font-size: .9em;
+    line-height: 1.6em;
+}
+
+#activities-table .actions{
+    text-align: right;
+    padding-right: 0;
+}
+
+.action-text{
+    display: block;
+    font-size: 12px;
+    margin-top: -9px;
+}
+
+.center-text{
+    text-align: center;
 }
