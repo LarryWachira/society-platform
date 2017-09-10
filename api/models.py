@@ -84,7 +84,7 @@ class Base(db.Model):
             A dict object
         """
         dictionary_mapping = {
-            camel_case(attribute.name): getattr(self, attribute.name)
+            camel_case(attribute.name): str(getattr(self, attribute.name))
             for attribute in self.__table__.columns}
         return dictionary_mapping
 
@@ -112,6 +112,7 @@ class Society(Base):
     """Model Societies in Andela."""
 
     __tablename__ = 'societies'
+    name = db.Column(db.String, nullable=False, unique=True)
     color_scheme = db.Column(db.String)
     logo = db.Column(db.String)
     _total_points = db.Column(db.Integer, default=0)
