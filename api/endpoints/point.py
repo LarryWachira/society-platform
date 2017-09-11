@@ -41,27 +41,32 @@ class PointResource(Resource):
 
         response = {}
         if user_id and activity_id:
-            values = Point.query.filter_by(user_id=user_id)
+            values = Point.query.order_by(Point.created_at).filter_by(
+                user_id=user_id)
             response["points"] = list(map(
                 serialize_point,
                 values.filter_by(activity_id=activity_id).all()))
 
         elif society_id and activity_id:
-            values = Point.query.filter_by(society_id=society_id)
+            values = Point.query.order_by(Point.created_at).filter_by(
+                society_id=society_id)
             response["points"] = list(map(
                 serialize_point,
                 values.filter_by(activity_id=activity_id).all()))
 
         elif user_id:
-            values = Point.query.filter_by(user_id=user_id)
+            values = Point.query.order_by(Point.created_at).filter_by(
+                user_id=user_id)
             response["points"] = list(map(serialize_point, values.all()))
 
         elif activity_id:
-            values = Point.query.filter_by(activity_id=activity_id)
+            values = Point.query.order_by(Point.created_at).filter_by(
+                activity_id=activity_id)
             response["points"] = list(map(serialize_point, values))
 
         elif society_id:
-            values = Point.query.filter_by(society_id=society_id).all()
+            values = Point.query.order_by(Point.created_at).filter_by(
+                society_id=society_id).all()
             response["points"] = list(map(serialize_point, values))
 
         else:
@@ -88,11 +93,12 @@ class PointResource(Resource):
         total_r = sum([int(point["value"]) for point in rejected_point])
         total_inp = sum([int(point["value"]) for point in inprogress_point])
 
-        response["total_pending_points"] = total_p
-        response["total_rejected_points"] = total_r
-        response["total_inprogress_points"] = total_inp
-        response["total_points"] = total
+        response["totalPendingPoints"] = total_p
+        response["totalRejectedPoints"] = total_r
+        response["totalInprogressPoints"] = total_inp
+        response["totalPointsAproved"] = total
 
+        response["points"].reverse()
         return response, 200
 
     @token_required
@@ -117,10 +123,13 @@ class PointResource(Resource):
         if args.get('value') < 1:
             return {"error": "Quantity must be greater than 1."}, 400
 
-        value = activity.value * args.get('value')
+        name = args.get('name')
+        if user.points.filter_by(name=name).first():
+            return {"error":
+                    f"You have already logged: {name}, please edit it."}, 400
 
         point = Point(
-            value=value,
+            value=activity.value * args.get('value'),
             name=args.get('name'),
             description=args.get('description') or "Not Available.")
 
@@ -129,7 +138,7 @@ class PointResource(Resource):
         user.society.points.append(point)
 
         if point.save():
-            return point.serialize(), 201
+            return serialize_point(point), 201
         return {"error": f"Server unable to create point:{point.name}."}, 500
 
     @token_required
@@ -153,12 +162,10 @@ class PointResource(Resource):
             return {"error": "Values are the same, can not update."}, 409
 
         elif not value and not args.get('description'):
-            return {"error":
-                    "Provide value or description to update."}, 422
+            return {"error": "Provide value or description to update."}, 422
 
         elif not (point.user_id == g.current_user.uuid):
-            return{"error":
-                   "Permission denied: user not allowed"}, 403
+            return{"error": "Permission denied: user not allowed"}, 403
 
         if value:
             point.value = value
@@ -170,19 +177,19 @@ class PointResource(Resource):
             point.description = args.get('description')
 
         if point.save():
-            return point.serialize(), 200
+            return serialize_point(point), 200
         return {"error": f"Server unable to update point: {point.name}."}, 500
 
     @roles_required
     def patch(self):
         """Patch points submitted."""
-        STATUS = ["APPROVED", "REJECTED", "INPROGRESS"]
         self.parser.add_argument('point_id', required=True)
         self.parser.add_argument('status', required=True)
         args = self.parser.parse_args()
 
         status = args.get('status')
 
+        STATUS = ("APPROVED", "REJECTED", "INPROGRESS")
         if not status or status.upper() not in STATUS:
             return{"error":
                    f"Status should be one of: {', '.join(STATUS)}"}, 400
@@ -191,12 +198,16 @@ class PointResource(Resource):
         if not point:
             return {"error": "Invalid point id"}, 400
 
-        point.status = status.upper()
-        if point.status == "APPROVED":
+        if not (point.status == STATUS[0]) and status.upper() == STATUS[0]:
             point.society.total_points = point.value
 
+        if point.status == STATUS[0] and status.upper() == STATUS[1]:
+            point.society.total_points = -point.value
+
+        point.status = status.upper()
+
         if point.save():
-            return point.serialize(), 200
+            return serialize_point(point), 200
         return {"error": f"Server unable to update point: {point.name}."}, 500
 
     @token_required
