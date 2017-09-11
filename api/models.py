@@ -124,8 +124,8 @@ class Society(Base):
         return self._total_points
 
     @total_points.setter
-    def total_points(self, point):
-        self._total_points += point.value
+    def total_points(self, value):
+        self._total_points += value
 
 
 class Activity(Base):
