@@ -20,16 +20,21 @@ class UserAPI(Resource):
             user["society"] = None
 
         logged_activities = []
-        for _activity in _user.activities:
+        user_points = _user.points
+        for _point in user_points:
+            _activity = _point.activity
             activity = _activity.serialize()
-            activity['status'] = _activity.points.filter_by(
-                activity_id=_activity.uuid, user_id=_user.uuid).first().status
+            activity['status'] = _point.status
+            activity['createdAt'] = _point.created_at
+            activity['pointName'] = _point.name
+            activity['pointDescription'] = _point.description
+            activity['value'] = _point.value
+            activity['timesLogged'] = len(user_points.filter_by(
+                activity_id=_activity.uuid).all())
             logged_activities.append(activity)
-            activity['timesLogged'] = len(_user.activities.filter_by(
-                name=_activity.name).all())
 
         user["loggedActivities"] = logged_activities
         logged_points = sum([point.value for point in _user.points])
-        user["loggedPoints"] = logged_points
+        user["totaLoggedPoints"] = logged_points
 
         return jsonify(dict(data=user))
