@@ -180,7 +180,7 @@ class PointResource(Resource):
             return serialize_point(point), 200
         return {"error": f"Server unable to update point: {point.name}."}, 500
 
-    @roles_required
+    @token_required
     def patch(self):
         """Patch points submitted."""
         self.parser.add_argument('point_id', required=True)
